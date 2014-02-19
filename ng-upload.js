@@ -181,6 +181,9 @@ angular.module('ngUpload', [])
             setLoadingState(false);
           }
           // Get iframe body contents
+
+
+          $log.debug("about to get the contents!");
           var bodyContent = (iframe[0].contentDocument ||
             iframe[0].contentWindow.document).body;
           var content;
