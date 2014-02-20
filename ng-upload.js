@@ -109,6 +109,10 @@ angular.module('ngUpload', [])
             options.beforeSubmit = $parse(attrs.uploadOptionsBeforeSubmit);
         }
 
+        if ( attrs.hasOwnProperty( "uploadOptionsExternalIframeSource" ) ) {
+            options.externalIframeSource = $parse(attrs.uploadOptionsExternalIframeSource);
+        }
+
         element.attr({
           'target': 'upload-iframe-' + iframeID,
           'method': 'post',
@@ -116,13 +120,21 @@ angular.module('ngUpload', [])
           'encoding': 'multipart/form-data'
         });
 
-        var iframe = angular.element(
-          '<iframe name="upload-iframe-' + iframeID + '" ' +
+        var iframeString = '<iframe name="upload-iframe-' + iframeID + '" ' +
           'border="0" width="0" height="0" ' +
           'style="width:0px;height:0px;border:none;display:none">'
-        );
 
-        // If enabled, add csrf hidden input to form
+        if( options.externalIframeSource ) {
+          iframeString = '<iframe name="upload-iframe-' + iframeID + '" ' +
+              'border="0" width="0" height="0" ' +
+              'src="'+ options.externalIframeSource + '" ' +
+              'style="width:0px;height:0px;border:none;display:none">'
+        }
+
+        console.log("iframeString: " + iframeString)
+
+
+          // If enabled, add csrf hidden input to form
         if ( options.enableRailsCsrf ) {
           var input = angular.element("<input />");
             input.attr("class", "upload-csrf-token");
